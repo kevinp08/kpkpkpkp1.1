@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="de" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CO₂-Footprint</title>
+<style>
+/* === Farbpalette und Grundlayout === */
+:root{--bg:#f6fbf9;--card:#fff;--pri:#22b8a0;--pri2:#86e3cf;--fg:#11332a}
+body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--fg)}
+
+/* === Header & Footer mit Schatten === */
+header,footer{background:var(--card);padding:12px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.wrap{max-width:1000px;margin:auto;padding:0 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+header strong{font-size:1.2em;color:var(--pri)}
+nav a{color:var(--fg);text-decoration:none;margin:0 5px}
+nav a:hover{color:var(--pri)}
+
+/* === Haupt-Layout mit Umschaltung für RTL/LTR === */
+.shell{display:grid;grid-template-columns:220px 1fr;grid-template-areas:"aside main";gap:16px;margin-top:16px}
+[dir="rtl"] .shell{grid-template-columns:1fr 220px;grid-template-areas:"main aside"}
+
+/* === Seitenmenü (Aside) === */
+aside{grid-area:aside;background:var(--card);padding:12px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+aside a{display:block;padding:6px 8px;border-radius:6px;color:var(--fg)}
+aside a:hover{background:var(--pri2)}
+button#dir{margin-top:10px;padding:6px 10px;background:var(--pri);color:#fff;border:none;border-radius:6px;cursor:pointer}
+button#dir:hover{background:#1ba88f}
+
+/* === Hauptbereich (Main) === */
+main{grid-area:main}
+input#q{padding:8px 10px;margin-bottom:10px;width:100%;max-width:300px;border:1px solid #ccc;border-radius:6px}
+
+/* === Tabelle === */
+table{width:100%;border-collapse:collapse;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+th,td{padding:10px;border-bottom:1px solid #eee}
+th{cursor:pointer;background:var(--pri2);text-align:left}
+th:hover{background:var(--pri);color:#fff}
+tr:hover td{background:#f1fcf8}
+
+/* === Mobile Ansicht === */
+@media(max-width:800px){.shell{grid-template-columns:1fr;grid-template-areas:"aside" "main"}}
+</style>
+</head>
+<body>
+
+<!-- === Kopfbereich mit Navigationslinks === -->
+<header>
+  <div class="wrap">
+    <strong>CO₂-Footprint</strong>
+    <nav>
+      <a href="#about">Über</a>|
+      <a href="#data">Daten</a>|
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<!-- === Hauptbereich mit Menü und Inhalt === -->
+<div class="wrap shell">
+  <!-- Seitenmenü mit RTL/LTR-Umschalter -->
+  <aside>
+    <nav>
+      <a href="#">Start</a>
+      <a href="#">Filter</a>
+      <a href="#">Tabelle</a>
+    </nav>
+    <button id="dir">RTL/LTR</button>
+  </aside>
+
+  <!-- Inhalt: Filterfeld + Tabelle -->
+  <main>
+    <input id="q" placeholder="Suche...">
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th data-k="country">Land</th>
+          <th data-k="company">Unternehmen</th>
+          <th data-k="co2">CO₂</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+</div>
+
+<!-- === Fußbereich mit Links === -->
+<footer>
+  <div class="wrap">
+    <span>© 2025 NGO</span>
+    <nav>
+      <a href="#impressum">Impressum</a>|
+      <a href="#datenschutz">Datenschutz</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+// === Fiktive Daten ===
+const DATA=[
+ {country:"DE",company:"GreenSteel",co2:42},{country:"DE",company:"AutoFuture",co2:58},
+ {country:"USA",company:"EnergyCo",co2:120},{country:"USA",company:"Pacific Tech",co2:35},
+ {country:"CN",company:"SinoChem",co2:210},{country:"CN",company:"BaoWorks",co2:95},
+ {country:"IN",company:"Mahadev",co2:88},{country:"IN",company:"Kiran Textiles",co2:22},
+ {country:"BR",company:"Amazonia",co2:40},{country:"BR",company:"Rio Logistics",co2:17},
+ {country:"FR",company:"BleuCiment",co2:51},{country:"FR",company:"Hexa Foods",co2:14},
+ {country:"JP",company:"Nippon Motors",co2:44},{country:"JP",company:"Kansai",co2:19},
+ {country:"ZA",company:"Cape Mining",co2:73}
+];
+
+// === Referenzen auf DOM-Elemente ===
+const T=document.querySelector('#tbl tbody'),q=document.querySelector('#q');
+let sort={k:'country',dir:1};
+
+// === Tabelle zeichnen ===
+function render(rows){
+  T.innerHTML='';
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    ['country','company','co2'].forEach(k=>{
+      const td=document.createElement('td');
+      td.textContent=r[k];
+      tr.appendChild(td);
+    });
+    T.appendChild(tr);
+  });
+}
+
+// === Sortieren bei Klick auf Tabellenkopf ===
+document.querySelectorAll('th').forEach(th=>th.onclick=()=>{
+  const k=th.dataset.k;
+  sort.dir=(sort.k===k?-sort.dir:1);
+  sort.k=k;
+  apply();
+});
+
+// === Filtern beim Tippen ===
+q.oninput=apply;
+function apply(){
+  const s=q.value.toLowerCase();
+  render(
+    DATA.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(s)))
+        .sort((a,b)=>{
+          let A=a[sort.k],B=b[sort.k];
+          if(sort.k==='co2'){A=+A;B=+B}
+          return(A>B?1:A<B?-1:0)*sort.dir;
+        })
+  );
+}
+
+// === RTL/LTR-Umschalter ===
+document.querySelector('#dir').onclick=()=>{
+  document.documentElement.dir=document.documentElement.dir==='rtl'?'ltr':'rtl';
+}
+
+// === Initial zeichnen ===
+apply();
+</script>
+</body>
+</html>
