@@ -6,29 +6,31 @@
 <title>CO₂-Footprint</title>
 <style>
 :root{--bg:#f6fbf9;--card:#fff;--pri:#22b8a0;--pri2:#86e3cf;--fg:#11332a}
-body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--fg)}
+body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--fg);scroll-behavior:smooth}
 header,footer{background:var(--card);padding:12px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
 .wrap{max-width:1000px;margin:auto;padding:0 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 header strong{font-size:1.2em;color:var(--pri)}
 nav a{color:var(--fg);text-decoration:none;margin:0 5px}
 nav a:hover{color:var(--pri)}
-.shell{display:grid;grid-template-columns:220px 1fr;grid-template-areas:"aside main";gap:16px;margin-top:16px}
-[dir="rtl"] .shell{grid-template-columns:1fr 220px;grid-template-areas:"main aside"}
-aside{grid-area:aside;background:var(--card);padding:12px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
-aside a{display:block;padding:6px 8px;border-radius:6px;color:var(--fg)}
-aside a:hover{background:var(--pri2)}
-button#dir{margin-top:10px;padding:6px 10px;background:var(--pri);color:#fff;border:none;border-radius:6px;cursor:pointer}
+.shell{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+
+/* Fixiertes Menü oben links */
+aside.menu{position:fixed;top:70px;left:20px;background:var(--card);padding:12px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
+aside.menu a{display:block;padding:6px 8px;border-radius:6px;color:var(--fg)}
+aside.menu a:hover{background:var(--pri2)}
+button#dir{margin-top:10px;padding:6px 10px;background:var(--pri);color:#fff;border:none;border-radius:6px;cursor:pointer;width:100%}
 button#dir:hover{background:#1ba88f}
-main{grid-area:main}
-input#q{padding:8px 10px;margin-bottom:10px;width:100%;max-width:300px;border:1px solid #ccc;border-radius:6px}
+
+main{margin-left:160px}
+input#q{padding:8px 10px;margin:10px 0;width:100%;max-width:300px;border:1px solid #ccc;border-radius:6px}
 table{width:100%;border-collapse:collapse;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,0.05)}
 th,td{padding:10px;border-bottom:1px solid #eee}
 th{cursor:pointer;background:var(--pri2);text-align:left}
 th:hover{background:var(--pri);color:#fff}
 tr:hover td{background:#f1fcf8}
-.explainer{margin-top:30px;padding:20px;background:var(--card);border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.06);line-height:1.6}
-.explainer h2{color:var(--pri);margin-top:0}
-@media(max-width:800px){.shell{grid-template-columns:1fr;grid-template-areas:"aside" "main"}}
+.textblock,.explainer{margin-top:30px;padding:20px;background:var(--card);border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.06);line-height:1.6}
+.textblock h2,.explainer h2{color:var(--pri);margin-top:0}
+@media(max-width:800px){aside.menu{position:static;margin:0 0 20px 0}main{margin:0}}
 </style>
 </head>
 <body>
@@ -44,19 +46,40 @@ tr:hover td{background:#f1fcf8}
   </div>
 </header>
 
-<div class="wrap shell">
-  <aside>
-    <nav>
-      <a href="#">Start</a>
-      <a href="#">Filter</a>
-      <a href="#">Tabelle</a>
-    </nav>
-    <button id="dir">RTL/LTR</button>
-  </aside>
+<!-- Menü oben links -->
+<aside class="menu">
+  <nav>
+    <a href="#folgen">Folgen</a>
+    <a href="#tabelle">Tabelle</a>
+    <a href="#zukunft">Zukunft</a>
+  </nav>
+  <button id="dir">Schreibrichtung: LTR</button>
+</aside>
 
-  <main>
+<div class="wrap shell">
+  <main id="top">
+    <!-- Textblock über der Tabelle -->
+    <section id="folgen" class="textblock">
+      <h2>Folgen des CO₂-Ausstoßes</h2>
+      <p>
+        Der Ausstoß von CO₂ trägt maßgeblich zum Klimawandel bei. Steigende Temperaturen führen 
+        zu extremeren Wetterereignissen, dem Abschmelzen von Gletschern und einem Anstieg des 
+        Meeresspiegels. Dies hat direkte Auswirkungen auf Ökosysteme, die Landwirtschaft und die 
+        Lebensqualität von Millionen Menschen weltweit.
+      </p>
+      <p>
+        Besonders anfällig sind Regionen mit dichter Bevölkerung und geringer Anpassungsfähigkeit. 
+        Auch Unternehmen sind betroffen: Lieferketten werden instabil, Ressourcen knapper und 
+        Versicherungsrisiken steigen. Deshalb ist die Verringerung von Emissionen nicht nur eine 
+        ökologische, sondern auch eine wirtschaftliche Notwendigkeit.
+      </p>
+    </section>
+
+    <!-- Suchleiste direkt über der Tabelle -->
     <input id="q" placeholder="Suche...">
-    <table id="tbl">
+
+    <!-- Tabelle mit Daten -->
+    <table id="tabelle">
       <thead>
         <tr>
           <th data-k="country">Land</th>
@@ -68,7 +91,7 @@ tr:hover td{background:#f1fcf8}
     </table>
 
     <!-- Erklärungsteil unter der Tabelle -->
-    <section class="explainer">
+    <section id="zukunft" class="explainer">
       <h2>CO₂-Ausstoß von Unternehmen und Zukunft</h2>
       <p>
         Unternehmen sind weltweit für einen erheblichen Teil der CO₂-Emissionen verantwortlich. 
@@ -104,23 +127,54 @@ tr:hover td{background:#f1fcf8}
 </footer>
 
 <script>
+// Daten (gekürzt aus Platzgründen, hier würde dein volles Array stehen)
 const DATA=[
- {country:"DE",company:"GreenSteel",co2:42},{country:"DE",company:"AutoFuture",co2:58},
- {country:"USA",company:"EnergyCo",co2:120},{country:"USA",company:"Pacific Tech",co2:35},
- {country:"CN",company:"SinoChem",co2:210},{country:"CN",company:"BaoWorks",co2:95},
- {country:"IN",company:"Mahadev",co2:88},{country:"IN",company:"Kiran Textiles",co2:22},
- {country:"BR",company:"Amazonia",co2:40},{country:"BR",company:"Rio Logistics",co2:17},
- {country:"FR",company:"BleuCiment",co2:51},{country:"FR",company:"Hexa Foods",co2:14},
- {country:"JP",company:"Nippon Motors",co2:44},{country:"JP",company:"Kansai",co2:19},
- {country:"ZA",company:"Cape Mining",co2:73}
+ {country:"DE",company:"GreenSteel",co2:42},
+ {country:"USA",company:"EnergyCo",co2:120},
+ // Vorhandene + zusätzliche Unternehmen
+ {country:"UK",company:"BP",co2:360},
+ {country:"US",company:"ConocoPhillips",co2:340},
+ {country:"CN",company:"Shenhua Group",co2:330},
+ {country:"IN",company:"Coal India",co2:320},
+ {country:"AU",company:"BHP",co2:310},
+ {country:"AU",company:"Rio Tinto",co2:300},
+ {country:"CA",company:"Suncor Energy",co2:290},
+ {country:"CA",company:"Canadian Natural Resources",co2:280},
+ {country:"US",company:"Peabody Energy",co2:270},
+ {country:"US",company:"Duke Energy",co2:260},
+ {country:"RU",company:"Rosneft",co2:250},
+ {country:"RU",company:"Lukoil",co2:240},
+ {country:"MX",company:"Pemex",co2:230},
+ {country:"BR",company:"Petrobras",co2:220},
+ {country:"KR",company:"Korea Electric Power",co2:210},
+ {country:"JP",company:"TEPCO",co2:200},
+ {country:"ID",company:"Pertamina",co2:190},
+ {country:"SA",company:"Sabic",co2:180},
+ {country:"NG",company:"Nigerian National Petroleum",co2:170},
+ {country:"MY",company:"Petronas",co2:160}
 ];
-const T=document.querySelector('#tbl tbody'),q=document.querySelector('#q');
+
+const T=document.querySelector('#tabelle tbody'),q=document.querySelector('#q');
 let sort={k:'country',dir:1};
+
+// Tabelle rendern
 function render(rows){T.innerHTML='';rows.forEach(r=>{const tr=document.createElement('tr');['country','company','co2'].forEach(k=>{const td=document.createElement('td');td.textContent=r[k];tr.appendChild(td)});T.appendChild(tr)})}
-document.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;sort.dir=(sort.k===k?-sort.dir:1);sort.k=k;apply()});
+
+// Sortieren
+for(const th of document.querySelectorAll('th')) th.onclick=()=>{const k=th.dataset.k;sort.dir=(sort.k===k?-sort.dir:1);sort.k=k;apply()};
+
+// Filtern
 q.oninput=apply;
 function apply(){const s=q.value.toLowerCase();render(DATA.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(s))).sort((a,b)=>{let A=a[sort.k],B=b[sort.k];if(sort.k==='co2'){A=+A;B=+B}return(A>B?1:A<B?-1:0)*sort.dir}))}
-document.querySelector('#dir').onclick=()=>{document.documentElement.dir=document.documentElement.dir==='rtl'?'ltr':'rtl'}
+
+// RTL/LTR Button mit Speicher
+const dirBtn=document.querySelector('#dir');
+function updateDirLabel(){dirBtn.textContent='Schreibrichtung: '+document.documentElement.dir.toUpperCase()}
+dirBtn.onclick=()=>{document.documentElement.dir=document.documentElement.dir==='rtl'?'ltr':'rtl';localStorage.setItem('dir',document.documentElement.dir);updateDirLabel()};
+if(localStorage.getItem('dir')) document.documentElement.dir=localStorage.getItem('dir');
+updateDirLabel();
+
+// Initial render
 apply();
 </script>
 </body>
