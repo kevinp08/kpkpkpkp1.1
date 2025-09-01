@@ -4,6 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>CO₂-Footprint</title>
+  
+        <!-- Ab hier beginnt der CSS Teil, dort macht man Kommentare mit "/* */"   -->
 <style>
 :root{--bg:#f6fbf9;--card:#fff;--pri:#22b8a0;--pri2:#86e3cf;--fg:#11332a}
 body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--fg);scroll-behavior:smooth}
@@ -22,7 +24,7 @@ button#dir{margin-top:10px;padding:6px 10px;background:var(--pri);color:#fff;bor
 button#dir:hover{background:#1ba88f}
 
 main{margin-left:160px}
-// Suchleiste und Tabelle
+/* Suchleiste und Tabelle */
 input#q{padding:8px 10px;margin:10px 0;width:100%;max-width:300px;border:1px solid #ccc;border-radius:6px}
 table{width:100%;border-collapse:collapse;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,0.05)}
 th,td{padding:10px;border-bottom:1px solid #eee}
@@ -47,7 +49,7 @@ tr:hover td{background:#f1fcf8}
   </div>
 </header>
 
-  // Inhalt Tabelle oben Links
+  <!-- Inhalt Tabelle oben Links  -->
 <aside class="menu">
   <nav>
     <a href="#folgen">Folgen</a>
@@ -59,7 +61,7 @@ tr:hover td{background:#f1fcf8}
 
 <div class="wrap shell">
   <main id="top">
-    // Bereich "Folgen" Text
+      <!-- Bereich "Folgen" Text  -->
     <section id="folgen" class="textblock">
       <h2>Folgen des CO₂-Ausstoßes</h2>
       <p>
@@ -91,7 +93,7 @@ tr:hover td{background:#f1fcf8}
       <tbody></tbody>
     </table>
 
-  // Bereich "Zukunft" Text
+      <!-- Bereich "Zukunft" Text  -->
     <section id="zukunft" class="explainer">
       <h2>CO₂-Ausstoß von Unternehmen und Zukunft</h2>
       <p>
@@ -127,6 +129,7 @@ tr:hover td{background:#f1fcf8}
   </div>
 </footer>
 
+        <!-- Ab hier beginnt der HTMl Teil, dort macht man Kommentare mit "//"  -->
 <script>
 // Daten für Tabelle
 const DATA=[
