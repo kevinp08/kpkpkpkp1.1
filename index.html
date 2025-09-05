@@ -44,7 +44,9 @@ tr:hover td{background:#f1fcf8}
   <div class="wrap">
     <strong>CO₂-Footprint</strong>
     <nav>
-      
+    <a href="#folgen">Folgen</a>
+    <a href="#tabelle">Tabelle</a>
+    <a href="#zukunft">Zukunft</a>
     </nav>
   </div>
 </header>
@@ -161,7 +163,19 @@ const T=document.querySelector('#tabelle tbody'),q=document.querySelector('#q');
 let sort={k:'country',dir:1};
 
 // Tabelle rendern
-function render(rows){T.innerHTML='';rows.forEach(r=>{const tr=document.createElement('tr');['country','company','co2'].forEach(k=>{const td=document.createElement('td');td.textContent=r[k];tr.appendChild(td)});T.appendChild(tr)})}
+function render(rows){
+  T.innerHTML='';
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    ['country','company','co2'].forEach(k=>{
+      const td=document.createElement('td');
+      td.textContent = r[k];   // Hier wird der Text sicher eingefügt
+      tr.appendChild(td);
+    });
+    T.appendChild(tr);
+  });
+}
+
 
 // Sortieren
 for(const th of document.querySelectorAll('th')) th.onclick=()=>{const k=th.dataset.k;sort.dir=(sort.k===k?-sort.dir:1);sort.k=k;apply()};
